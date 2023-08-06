@@ -13,26 +13,47 @@ namespace RealEstate_Dapper_API.Repositories.CategoryRepository
             _applicationContext = applicationContext;
         }
 
-        public async void AddCategoryAsync(CreateCategoryDto createCategoryDto)
+        public async Task AddCategoryAsync(CreateCategoryDto createCategoryDto)
         {
-            string query = "insert into categories (CategoryName,CategoryStatus) values (@categoryName,@categoryStatus)";
-            var parameters = new DynamicParameters();
-            parameters.Add("@categoryName", createCategoryDto.CategoryName);
-            parameters.Add("@categoryStatus", true);
+            var parameters = new { categoryName = createCategoryDto.CategoryName, categoryStatus = true };
+            string query = "INSERT INTO categories (CategoryName, CategoryStatus) VALUES (@categoryName, @categoryStatus)";
+
             using (var connection = _applicationContext.CreateConnection())
             {
                 await connection.ExecuteAsync(query, parameters);
             }
+        }
 
+        public async Task DeleteCategoryAsync(int id)
+        {
+            var parameters = new { id };
+            string query = "DELETE FROM categories WHERE Id = @id";
+
+            using (var connection = _applicationContext.CreateConnection())
+            {
+                await connection.ExecuteAsync(query, parameters);
+            }
         }
 
         public async Task<List<ResultCategoryDto>> GetAllCategoryAsync()
         {
             string query = "SELECT * FROM Categories";
+
             using (var connection = _applicationContext.CreateConnection())
             {
                 var values = await connection.QueryAsync<ResultCategoryDto>(query);
-                return values.ToList();
+                return values.AsList();
+            }
+        }
+
+        public async Task UpdateCategoryAsync(UpdateCategoryDto updateCategoryDto)
+        {
+            var parameters = new { id = updateCategoryDto.Id, categoryName = updateCategoryDto.CategoryName, categoryStatus = updateCategoryDto.CategoryStatus };
+            string query = "UPDATE Categories SET CategoryName = @categoryName, CategoryStatus = @categoryStatus WHERE Id = @id";
+
+            using (var connection = _applicationContext.CreateConnection())
+            {
+                await connection.ExecuteAsync(query, parameters);
             }
         }
     }
