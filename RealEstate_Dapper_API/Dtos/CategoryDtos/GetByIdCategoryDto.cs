@@ -1,6 +1,6 @@
-﻿namespace RealEstate_Dapper_API.Dtos
+﻿namespace RealEstate_Dapper_API.Dtos.CategoryDtos
 {
-    public class ResultCategoryDto
+    public class GetByIdCategoryDto
     {
         public int Id { get; set; }
         public string CategoryName { get; set; }

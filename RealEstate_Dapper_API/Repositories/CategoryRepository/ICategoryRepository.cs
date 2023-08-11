@@ -1,12 +1,13 @@
-﻿using RealEstate_Dapper_API.Dtos;
+﻿using RealEstate_Dapper_API.Dtos.CategoryDtos;
 
 namespace RealEstate_Dapper_API.Repositories.CategoryRepository
 {
     public interface ICategoryRepository
     {
-        public Task<List<ResultCategoryDto>> GetAllCategoryAsync();
-        Task AddCategoryAsync(CreateCategoryDto createCategoryDto);
-        Task DeleteCategoryAsync(int id);
-        Task UpdateCategoryAsync(UpdateCategoryDto updateCategoryDto);
+        Task<List<ResultCategoryDto>> GetAllCategoriesAsync();
+        Task AddCategoryAsync(CreateCategoryDto categoryToAdd);
+        Task DeleteCategoryAsync(int categoryId);
+        Task UpdateCategoryAsync(UpdateCategoryDto categoryToUpdate);
+        Task<GetByIdCategoryDto> GetCategoryByIdAsync(int categoryId);
     }
 }
